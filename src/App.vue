@@ -8,32 +8,37 @@
           <span
             @click="handleClick(seat)"
             v-for="seat in getSeats"
+            :key="seat.seatNumber"
+            class="text-center cursor-pointer bg-blue-100 text-blue-800 text-xs font-semibold mr-2 p-5 rounded"
             :class="
               {
-                'dark:bg-yellow-200 dark:text-yellow-900':
-                  seat.type == 'selected',
-              },
-              {
-                'dark:bg-red-200 dark:text-red-900':
-                  seat.type == 'full' && seat.gender == 'erkek',
+                'dark:bg-green-200 dark:text-red-900':
+                  seat.type == 'full' && seat.gender === 'erkek',
               },
               {
                 'dark:bg-pink-200 dark:text-pink-900':
-                  seat.type == 'full' && seat.gender == 'kadın',
+                  seat.type == 'full' && seat.gender === 'kadın',
+              },
+              {
+                'dark:bg-yellow-200 dark:text-yellow-900':
+                  seat.type == 'selected',
               }
             "
-            class="cursor-pointer bg-blue-100 text-blue-800 text-xs font-semibold mr-2 p-5 rounded dark:bg-blue-200 dark:text-blue-800"
           >
             {{ seat.seatNumber }}
           </span>
         </div>
-
-        <form @submit.prevent="sendSeat" class="my-5 border-2 p-5">
-          <span> Seçilen Koltuk : {{ seatApprove.seatNumber }} </span>
-
-          <div class="flex justify-center">
-            <div>
-              Cinsiyet Seçiniz
+        <form
+          @submit.prevent="sendSeat"
+          class="my-5 border-2 p-5"
+          v-if="selectedSeats.length === 1"
+        >
+          <div class="flex justify-between">
+            <span class="text-center">
+              <strong>Seçilen Koltuk :</strong> {{ seatApprove.seatNumber }}
+            </span>
+            <div class="flex flex-col">
+              <strong>Cinsiyet Seçiniz</strong>
               <div class="form-check">
                 <input
                   class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
@@ -58,7 +63,6 @@
                   id="flexRadioDefault2"
                   value="kadın"
                   v-model="seatApprove.gender"
-                  checked
                 />
                 <label
                   class="form-check-label inline-block text-gray-800"
@@ -69,10 +73,7 @@
               </div>
             </div>
           </div>
-
-          <button type="submit"> Bilet satın Al </button>
-
-
+          <button class="w-full mt-3" type="submit">Bilet satın Al</button>
         </form>
       </div>
     </div>
@@ -109,13 +110,13 @@ export default {
       event.type = event.type === "selected" ? "empty" : "selected";
     },
 
-    sendSeat(){
-      if(!this.seatApprove.gender || this.seatApprove.seatNumber == ""){
-          alert('Tüm alanları doldurunuz');
-          return;
+    sendSeat() {
+      if (!this.seatApprove.gender || this.seatApprove.seatNumber == "") {
+        alert("alanları doldurun");
+        return;
       }
-      this.$store.dispatch("seatUpdate", {...this.seatApprove})
-    }
+      this.$store.dispatch("seatUpdate", { ...this.seatApprove });
+    },
   },
 };
 </script>
