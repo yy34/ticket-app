@@ -1,15 +1,15 @@
 <template>
-  <div class="container mx-auto py-5">
-    <h3 class="text-center py-1 mb-5">Ticket App</h3>
+  <div class="container mx-auto p-5">
+    <h3 class="border-2 p-5 text-center mb-5 mx-auto md:w-1/2 font-bold uppercase text-2xl">Ticket App</h3>
 
-    <div class="flex justify-center">
-      <div class="w-1/2 flex flex-col">
+    <div class="border-2 p-5 md:w-1/2 mx-auto flex justify-center">
+      <div class="md:w-1/2 flex flex-col justify-center items-center">
         <div class="grid grid-cols-4 gap-6">
           <span
             @click="handleClick(seat)"
             v-for="seat in getSeats"
             :key="seat.seatNumber"
-            class="text-center cursor-pointer bg-blue-100 text-blue-800 text-xs font-semibold mr-2 p-5 rounded"
+            class="seat grid place-content-center text-center cursor-pointer bg-blue-100 text-blue-800 text-xs font-semibold p-5 rounded"
             :class="
               {
                 'dark:bg-green-200 dark:text-red-900':
@@ -30,14 +30,14 @@
         </div>
         <form
           @submit.prevent="sendSeat"
-          class="my-5 border-2 p-5"
+          class="my-5 w-full p-5 border-2"
           v-if="selectedSeats.length === 1"
         >
-          <div class="flex justify-between">
-            <span class="text-center">
-              <strong>Seçilen Koltuk :</strong> {{ seatApprove.seatNumber }}
-            </span>
-            <div class="flex flex-col">
+          <div class="flex flex-col">
+           
+              <strong>Seçilen Koltuk : {{ seatApprove.seatNumber }}</strong> 
+           
+            <div class="flex flex-col mt-3">
               <strong>Cinsiyet Seçiniz</strong>
               <div class="form-check">
                 <input
@@ -102,7 +102,8 @@ export default {
     handleClick(event) {
       this.seatApprove.seatNumber = event.seatNumber;
       if (event.type == "full") {
-        return;
+      this.seatApprove.seatNumber = "";
+       return;
       }
       if (event.type == "empty") {
         this.clearSelected;
@@ -112,7 +113,7 @@ export default {
 
     sendSeat() {
       if (!this.seatApprove.gender || this.seatApprove.seatNumber == "") {
-        alert("alanları doldurun");
+        alert("Seçimleri kontrol ediniz...");
         return;
       }
       this.$store.dispatch("seatUpdate", { ...this.seatApprove });
